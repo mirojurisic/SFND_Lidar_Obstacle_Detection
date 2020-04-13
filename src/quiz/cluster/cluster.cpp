@@ -6,7 +6,7 @@
 #include <chrono>
 #include <string>
 #include "kdtree.h"
-
+#include <unordered_set>
 // Arguments:
 // window is the region to draw box around
 // increase zoom to see more of the area
@@ -75,12 +75,45 @@ void render2DTree(Node* node, pcl::visualization::PCLVisualizer::Ptr& viewer, Bo
 
 }
 
+void proximity(const std::vector<std::vector<float>>& points, std::vector<int>& cluster,std::vector<bool>& processed,
+int current_id, float distanceTol,	 KdTree* tree)
+{
+	processed[current_id] = true;
+	cluster.push_back(current_id);
+	std::vector<int> neighbors = tree->search(points[current_id],distanceTol);
+
+	for(auto neighbor_id : neighbors)
+	{
+		if(!processed[neighbor_id])
+		{
+			proximity(points,cluster, processed,neighbor_id,distanceTol,tree);
+		}
+	}
+}
+
+
 std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
 {
 
 	// TODO: Fill out this function to return list of indices for each cluster
 
 	std::vector<std::vector<int>> clusters;
+	std::vector<bool> processed(points.size(), false);
+	int i = 0;
+	while( i < points.size() )
+	{
+		if(processed[i] )
+			{
+				i++;
+				continue;
+			}
+
+		std::vector<int> cluster;
+		proximity(points,cluster, processed,i ,distanceTol,tree);
+		clusters.push_back(cluster);
+		i++ ;
+	}
+
  
 	return clusters;
 
@@ -140,7 +173,9 @@ int main ()
   	}
   	if(clusters.size()==0)
   		renderPointCloud(viewer,cloud,"data");
-	
+
+
+
   	while (!viewer->wasStopped ())
   	{
   	  viewer->spinOnce ();
