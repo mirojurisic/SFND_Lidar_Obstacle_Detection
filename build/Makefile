@@ -40,6 +40,9 @@ default_target: all
 .SUFFIXES: .hpux_make_needs_suffix_list
 
 
+# Command-line flag to silence nested $(MAKE).
+$(VERBOSE)MAKESILENT = -s
+
 # Suppress display of executed commands.
 $(VERBOSE).SILENT:
 
@@ -56,10 +59,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/cmake/301/bin/cmake
+CMAKE_COMMAND = /snap/cmake/323/bin/cmake
 
 # The command to remove a file.
-RM = /snap/cmake/301/bin/cmake -E rm -f
+RM = /snap/cmake/323/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -76,7 +79,7 @@ CMAKE_BINARY_DIR = "/home/mimo/Udacity/Sensor fusion/Lidar/SFND_Lidar_Obstacle_D
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/cmake/301/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/cmake/323/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,7 +90,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/snap/cmake/301/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/cmake/323/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -98,13 +101,13 @@ edit_cache/fast: edit_cache
 # The main all target
 all: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/mimo/Udacity/Sensor fusion/Lidar/SFND_Lidar_Obstacle_Detection/build/CMakeFiles" "/home/mimo/Udacity/Sensor fusion/Lidar/SFND_Lidar_Obstacle_Detection/build/CMakeFiles/progress.marks"
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/mimo/Udacity/Sensor fusion/Lidar/SFND_Lidar_Obstacle_Detection/build/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
 .PHONY : clean
 
 # The main clean target
@@ -114,12 +117,12 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall/fast
 
 # clear depends
@@ -132,12 +135,12 @@ depend:
 
 # Build rule for target.
 environment: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 environment
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 environment
 .PHONY : environment
 
 # fast build rule for target.
 environment/fast:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/build
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/build
 .PHONY : environment/fast
 
 src/environment.o: src/environment.cpp.o
@@ -146,7 +149,7 @@ src/environment.o: src/environment.cpp.o
 
 # target to build an object file
 src/environment.cpp.o:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.o
 .PHONY : src/environment.cpp.o
 
 src/environment.i: src/environment.cpp.i
@@ -155,7 +158,7 @@ src/environment.i: src/environment.cpp.i
 
 # target to preprocess a source file
 src/environment.cpp.i:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.i
 .PHONY : src/environment.cpp.i
 
 src/environment.s: src/environment.cpp.s
@@ -164,7 +167,7 @@ src/environment.s: src/environment.cpp.s
 
 # target to generate assembly for a file
 src/environment.cpp.s:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/environment.cpp.s
 .PHONY : src/environment.cpp.s
 
 src/processPointClouds.o: src/processPointClouds.cpp.o
@@ -173,7 +176,7 @@ src/processPointClouds.o: src/processPointClouds.cpp.o
 
 # target to build an object file
 src/processPointClouds.cpp.o:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.o
 .PHONY : src/processPointClouds.cpp.o
 
 src/processPointClouds.i: src/processPointClouds.cpp.i
@@ -182,7 +185,7 @@ src/processPointClouds.i: src/processPointClouds.cpp.i
 
 # target to preprocess a source file
 src/processPointClouds.cpp.i:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.i
 .PHONY : src/processPointClouds.cpp.i
 
 src/processPointClouds.s: src/processPointClouds.cpp.s
@@ -191,7 +194,7 @@ src/processPointClouds.s: src/processPointClouds.cpp.s
 
 # target to generate assembly for a file
 src/processPointClouds.cpp.s:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/processPointClouds.cpp.s
 .PHONY : src/processPointClouds.cpp.s
 
 src/render/render.o: src/render/render.cpp.o
@@ -200,7 +203,7 @@ src/render/render.o: src/render/render.cpp.o
 
 # target to build an object file
 src/render/render.cpp.o:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.o
 .PHONY : src/render/render.cpp.o
 
 src/render/render.i: src/render/render.cpp.i
@@ -209,7 +212,7 @@ src/render/render.i: src/render/render.cpp.i
 
 # target to preprocess a source file
 src/render/render.cpp.i:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.i
 .PHONY : src/render/render.cpp.i
 
 src/render/render.s: src/render/render.cpp.s
@@ -218,7 +221,7 @@ src/render/render.s: src/render/render.cpp.s
 
 # target to generate assembly for a file
 src/render/render.cpp.s:
-	$(MAKE) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/environment.dir/build.make CMakeFiles/environment.dir/src/render/render.cpp.s
 .PHONY : src/render/render.cpp.s
 
 # Help Target
