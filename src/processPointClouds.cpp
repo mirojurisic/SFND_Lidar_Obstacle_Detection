@@ -76,11 +76,6 @@ ProcessPointClouds<PointT>::SeparateClouds(pcl::PointIndices::Ptr inliers, typen
 {
     typename pcl::PointCloud<PointT>::Ptr obstacles(new pcl::PointCloud<PointT>());
     typename pcl::PointCloud<PointT>::Ptr plane(new pcl::PointCloud<PointT>());
-    // since we already have the indecies for plane, we can fill the plane points cloud
-    //for( int index : inliers->indices)
-    //{
-    //    plane->points.push_back(cloud->points[index]);
-    //}
 
     // Create the filtering object
     pcl::ExtractIndices<PointT> extract;
@@ -169,15 +164,6 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
     for(auto itr = inliersRes.begin();itr!= inliersRes.end();itr++)
         inliers->indices.push_back(*itr);
 
-    //if (inliers->indices.size() == 0) // check did we find a plane
-    //{
-    //   std::cerr << "Could not estimate a planar model for the given dataset." << std::endl;
-    //}
-
-    //auto endTime = std::chrono::steady_clock::now();
-    //auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    //std::cout << "plane segmentation took " << elapsedTime.count() << " milliseconds" << std::endl;
-
     std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> segResult = SeparateClouds(inliers, cloud);
     return segResult;
 }
@@ -194,7 +180,6 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    //std::cout << "clustering took " << elapsedTime.count() << " milliseconds and found " << clusters.size() << " clusters" << std::endl;
 
     return clusters;
 }
@@ -273,8 +258,6 @@ template <typename PointT>
 std::vector<std::vector<int>> ProcessPointClouds<PointT>::euclideanCluster(const std::vector<PointT, Eigen::aligned_allocator<PointT>>& points, KdTree* tree, float distanceTol)
 {
 
-	// TODO: Fill out this function to return list of indices for each cluster
-
 	std::vector<std::vector<int>> clusters;
 	std::vector<bool> processed(points.size(), false);
 	int i = 0;
@@ -305,8 +288,6 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::M
   
     for (int i=0; i<cloud->points.size(); i++) 
     	tree->insert(std::vector<float>{cloud->points[i].x,cloud->points[i].y,cloud->points[i].z},i); 
-
-  	// Time segmentation process
   	auto startTime = std::chrono::steady_clock::now();
   	//
     typename std::vector<typename pcl::PointCloud<PointT>::Ptr> clusters;
@@ -317,11 +298,8 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::M
   		typename pcl::PointCloud<PointT>::Ptr clusterCloud(new pcl::PointCloud<PointT>());
   		for(int index: cluster_indices)
   			clusterCloud->points.push_back(PointT(cloud->points[index]));
-        //clusterCloud->width = clusterCloud->points.size();
-        //clusterCloud->height = 1;
         clusterCloud->is_dense = true;
         clusters.push_back(clusterCloud);
   	}
-          // for every group of indicies
    return clusters;
 }
